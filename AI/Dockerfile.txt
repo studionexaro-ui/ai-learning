@@ -1,0 +1,14 @@
+FROM python:3.9-slim
+
+# Install system tools
+RUN apt-get update && apt-get install -y wget build-essential cmake
+
+WORKDIR /app
+
+# The "Fetch" command
+RUN wget -O model.gguf "https://www.dropbox.com/scl/fi/g3n4eivgdai7alc1tezan/ruvltra-claude-code-0.5b-q4_k_m.gguf?rlkey=nul0ucodp0mbi89hh1hh6tcy8&st=5zu920ii&dl=1"
+
+COPY . .
+RUN pip install --no-cache-dir -r requirements.txt
+
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "10000"]
